@@ -15,49 +15,21 @@ class Login extends Component {
   loginForm = undefined;
   state = {
     type: 'account',
-    autoLogin: true,
   };
 
-  handleSubmit = (err, values) => {
-    const { type } = this.state;
+  handleSubmit = (err, values, auth, status) => {
 
+
+    const { type } = this.state;
     if (!err) {
       const { dispatch } = this.props;
       dispatch({
         type: 'login/login',
-        payload: { ...values, type },
+        payload: { ...values, type, auth, status },
       });
     }
   };
-  onTabChange = type => {
-    this.setState({
-      type,
-    });
-  };
-  onGetCaptcha = () =>
-    new Promise((resolve, reject) => {
-      if (!this.loginForm) {
-        return;
-      }
 
-      this.loginForm.validateFields(['mobile'], {}, async (err, values) => {
-        if (err) {
-          reject(err);
-        } else {
-          const { dispatch } = this.props;
-
-          try {
-            const success = await dispatch({
-              type: 'login/getCaptcha',
-              payload: values.mobile,
-            });
-            resolve(!!success);
-          } catch (error) {
-            reject(error);
-          }
-        }
-      });
-    });
   renderMessage = content => (
     <Alert
       style={{
@@ -72,12 +44,10 @@ class Login extends Component {
   render() {
     const { userLogin, submitting } = this.props;
     const { status, type: loginType } = userLogin;
-    const { type, autoLogin } = this.state;
+
     return (
       <div className={styles.main}>
         <LoginComponents
-          defaultActiveKey={type}
-          onTabChange={this.onTabChange}
           onSubmit={this.handleSubmit}
           onCreate={form => {
             this.loginForm = form;
@@ -100,7 +70,7 @@ class Login extends Component {
               name="email"
               placeholder={`${formatMessage({
                 id: 'user-login.login.email',
-              })}: admin or user`}
+              })}`}
               rules={[
                 {
                   required: true,
@@ -114,7 +84,7 @@ class Login extends Component {
               name="password"
               placeholder={`${formatMessage({
                 id: 'user-login.login.password',
-              })}: ant.design`}
+              })}`}
               rules={[
                 {
                   required: true,
@@ -123,12 +93,8 @@ class Login extends Component {
                   }),
                 },
               ]}
-
             />
-
-
           <div>
-
             <a
               style={{
                 float: 'right',

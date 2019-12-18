@@ -60,11 +60,6 @@ class Login extends Component {
             tabs: [...tabs, id],
           });
         },
-        removeTab: id => {
-          this.setState({
-            tabs: tabs.filter(currentId => currentId !== id),
-          });
-        },
       },
       form: { ...form },
       updateActive: activeItem => {
@@ -88,6 +83,7 @@ class Login extends Component {
     const { form, onSubmit } = this.props;
     const activeFields = active[type] || [];
 
+
     if (form) {
       form.validateFields(
         activeFields,
@@ -96,22 +92,28 @@ class Login extends Component {
         },
         (err, values) => {
           if (onSubmit) {
-            loginUser({
-              variables: {
-                email: values.email,
-                password: values.password,
-              },
-            }).then((data) => {
-              console.log(data.data)
-              localStorage.setItem('token', data.data.LoginUser.token)
-                .then(() => console.log(data.data.LoginUser.token))
-              console.log("aeee")
-            }).catch((error) => {
-              if (error.message === 'GraphQL error: user_or_password_incorrect') {
-                console.log('email or password is incorrect')
-              }
-            })
-            onSubmit(err, values);
+
+              loginUser({
+                variables: {
+                  email: values.email,
+                  password: values.password,
+                },
+              }).then((data) => {
+                localStorage.setItem('idome_authority_token', data.data.LoginUser.token)
+                const auth = data.data.LoginUser.token
+                const status = data.data.LoginUser.status
+
+                onSubmit(err, values, auth, status );
+
+              }).catch((error) => {
+                if (error.message === 'GraphQL error: user_or_password_incorrect') {
+                  console.log('email or password is incorrect')
+                  onSubmit(err, values );
+
+                }
+              })
+
+
           }
         },
       );
