@@ -8,6 +8,7 @@ const getRouteAuthority = (path, routeData) => {
   let authorities;
   routeData.forEach(route => {
     if (route.authority) {
+      console.log(authorities)
       authorities = route.authority;
     } // match prefix
 
@@ -38,6 +39,7 @@ const AuthComponent = ({
   const { currentUser } = user;
   const { routes = [] } = route;
   const isLogin = currentUser && currentUser.name;
+
   return (
     <Authorized
       authority={getRouteAuthority(location.pathname, routes) || ''}

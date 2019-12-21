@@ -93,25 +93,25 @@ class Login extends Component {
         (err, values) => {
           if (onSubmit) {
 
-              loginUser({
-                variables: {
-                  email: values.email,
-                  password: values.password,
-                },
-              }).then((data) => {
-                localStorage.setItem('idome_authority_token', data.data.LoginUser.token)
-                const auth = data.data.LoginUser.token
-                const status = data.data.LoginUser.status
+            loginUser({
+              variables: {
+                email: values.email,
+                password: values.password,
+              },
+            }).then((data) => {
+              localStorage.setItem('idome_authority_token', data.data.LoginUser.token)
+              const auth = data.data.LoginUser.token
+              const status = data.data.LoginUser.status
 
-                onSubmit(err, values, auth, status );
+              onSubmit(err, values, auth, status );
 
-              }).catch((error) => {
-                if (error.message === 'GraphQL error: user_or_password_incorrect') {
-                  console.log('email or password is incorrect')
-                  onSubmit(err, values );
+            }).catch((error) => {
+              if (error.message === 'GraphQL error: user_or_password_incorrect') {
+                console.log('email or password is incorrect')
+                onSubmit(err, values );
 
-                }
-              })
+              }
+            })
 
 
           }
@@ -145,21 +145,21 @@ class Login extends Component {
                 return (
                   <Form onSubmit={e => this.handleSubmit(e, loginUser)}>
                     {tabs.length ? (
-              <React.Fragment>
-                <Tabs
-                  animated={false}
-                  className={styles.tabs}
-                  activeKey={type}
-                  onChange={this.onSwitch}
-                >
-                  {TabChildren}
-                </Tabs>
-                {otherChildren}
-              </React.Fragment>
-            ) : (
-              children
-            )}
-          </Form>
+                      <React.Fragment>
+                        <Tabs
+                          animated={false}
+                          className={styles.tabs}
+                          activeKey={type}
+                          onChange={this.onSwitch}
+                        >
+                          {TabChildren}
+                        </Tabs>
+                        {otherChildren}
+                      </React.Fragment>
+                    ) : (
+                      children
+                    )}
+                  </Form>
                 )
               }
             }

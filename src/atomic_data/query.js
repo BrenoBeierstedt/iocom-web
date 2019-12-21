@@ -68,16 +68,28 @@ export const GET_USER_BY_ID = gql`
   query UserById($ID: String!) {
     UserById (
       ID: $ID
-    ) 
-    { 
+    )
+    {
       ID,
       full_name,
       email,
-      token,
-      phone {
-        phone_country,
-        phone_number
+
+      roles {
+        name
       }
+    }
+  }
+`
+
+export const GET_MYSELF = gql`
+  query Myself($ID: String!) {
+    Myself (
+      ID: $ID
+    )
+    {
+      ID,
+      full_name,
+      email,
       roles {
         name
       }

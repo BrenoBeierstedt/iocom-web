@@ -1,0 +1,16 @@
+#!/bin/bash
+
+cd /opt/app-root/src/
+
+if [ -f package.json ]; then
+  echo "### Found package.json, installing the dependencies"
+  yarn install
+fi
+
+if [ $APP_ENV == 'development' ]; then
+  echo "### you are a DEV! setting hot reload"
+  echo "### Dev dependencies"
+  yarn install --only=dev
+  echo "### runing"
+  .s2i/bin/run
+fi

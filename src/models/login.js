@@ -3,6 +3,7 @@ import router from 'umi/router';
 import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
+import { userAuth } from '@/utils/rolesDecrypt'
 
 const Model = {
   namespace: 'login',
@@ -10,21 +11,21 @@ const Model = {
     status: undefined,
   },
   //TODO finalize get authority and redirect to main page after login
+  // jwt decode
   effects: {
     *login({ payload }, { call, put }) {
-      console.log(payload)
-      const response = yield call(fakeAccountLogin, payload);
+      const response = yield call(userAuth, payload);
       yield put({
         type: 'changeLoginStatus',
         payload: response,
       }); // Login successfully
-
       if (payload.status === 'ok') {
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params;
 
         if (redirect) {
+
           const redirectUrlParams = new URL(redirect);
 
           if (redirectUrlParams.origin === urlParams.origin) {
