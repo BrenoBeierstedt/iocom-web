@@ -4,9 +4,14 @@ import omit from 'omit.js';
 import ItemMap from './map';
 import LoginContext from './LoginContext';
 import styles from './index.less';
+
 const FormItem = Form.Item;
 
 class WrapFormItem extends Component {
+  static defaultProps = {
+    getCaptchaButtonText: 'captcha',
+    getCaptchaSecondText: 'second',
+  };
 
   interval = undefined;
 
@@ -29,6 +34,21 @@ class WrapFormItem extends Component {
     clearInterval(this.interval);
   }
 
+  onGetCaptcha = () => {
+    const { onGetCaptcha } = this.props;
+    const result = onGetCaptcha ? onGetCaptcha() : null;
+
+    if (result === false) {
+      return;
+    }
+
+    if (result instanceof Promise) {
+      result.then(this.runGetCaptchaCountDown);
+    } else {
+      this.runGetCaptchaCountDown();
+    }
+  };
+
   getFormItemOptions = ({ onChange, defaultValue, customProps = {}, rules }) => {
     const options = {
       rules: rules || customProps.rules,
@@ -45,8 +65,26 @@ class WrapFormItem extends Component {
     return options;
   };
 
+  runGetCaptchaCountDown = () => {
+    const { countDown } = this.props;
+    let count = countDown || 59;
+    this.setState({
+      count,
+    });
+    this.interval = window.setInterval(() => {
+      count -= 1;
+      this.setState({
+        count,
+      });
+
+      if (count === 0) {
+        clearInterval(this.interval);
+      }
+    }, 1000);
+  };
 
   render() {
+    const { count } = this.state; // 这么写是为了防止restProps中 带入 onChange, defaultValue, rules props tabUtil
 
     const {
       onChange,
@@ -76,7 +114,28 @@ class WrapFormItem extends Component {
     const options = this.getFormItemOptions(this.props);
     const otherProps = restProps || {};
 
-
+    if (type === 'Captcha') {
+      const inputProps = omit(otherProps, ['onGetCaptcha', 'countDown']);
+      return (
+        <FormItem>
+          <Row gutter={8}>
+            <Col span={16}>
+              {getFieldDecorator(name, options)(<Input {...customProps} {...inputProps} />)}
+            </Col>
+            <Col span={8}>
+              <Button
+                disabled={!!count}
+                className={styles.getCaptcha}
+                size="large"
+                onClick={this.onGetCaptcha}
+              >
+                {count ? `${count} ${getCaptchaSecondText}` : getCaptchaButtonText}
+              </Button>
+            </Col>
+          </Row>
+        </FormItem>
+      );
+    }
 
     return (
       <FormItem>

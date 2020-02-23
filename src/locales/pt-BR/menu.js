@@ -7,6 +7,11 @@ export default {
   'menu.register': 'Registro',
   'menu.register.result': 'Resultado de registro',
   'menu.dashboard': 'Dashboard',
+  'menu.administrative.clientRegister': 'Cadastrar Cliente',
+  'menu.administrative.client': 'Clientes',
+  'menu.administrative.contractList': 'Contratos',
+  'menu.administrative.contractRegister': 'Cadastrar Contrato',
+
   'menu.dashboard.analysis': 'Análise',
   'menu.dashboard.monitor': 'Monitor',
   'menu.dashboard.workplace': 'Ambiente de Trabalho',
@@ -21,6 +26,8 @@ export default {
   'menu.form.step-form.result': 'Formulário Assistido(finalizado)',
   'menu.form.advanced-form': 'Formulário Avançado',
   'menu.list': 'Lista',
+  'menu.administrative': 'Administrativo',
+  'menu.administrative.adminuserlist':'Usuários Gerais',
   'menu.list.table-list': 'Tabela de Busca',
   'menu.list.basic-list': 'Lista Básica',
   'menu.list.card-list': 'Lista de Card',
@@ -42,6 +49,12 @@ export default {
   'menu.account': 'Conta',
   'menu.account.center': 'Central da Conta',
   'menu.account.settings': 'Configurar Conta',
+  'menu.account.list': 'Usuários',
+  'menu.account.addsingular': 'Cadastrar Usuário',
+
+  'menu.adduser': 'Convidar Usuário',
+  'menu.account.setlayout':'Layout',
+
   'menu.account.trigger': 'Disparar Erro',
   'menu.account.logout': 'Sair',
   'menu.editor': 'Graphic Editor',

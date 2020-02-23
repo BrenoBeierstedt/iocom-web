@@ -1,4 +1,4 @@
-import { Avatar, Icon, Menu, Spin } from 'antd';
+import { Avatar, Icon, Menu, Spin, Switch } from 'antd';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 import React from 'react';
 import { connect } from 'dva';
@@ -32,6 +32,7 @@ class AvatarDropdown extends React.Component {
         name: '',
       },
       menu,
+
     } = this.props;
     const menuHeaderDropdown = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
@@ -49,10 +50,19 @@ class AvatarDropdown extends React.Component {
         )}
         {menu && <Menu.Divider />}
 
+        {/*{menu && (*/}
+        {/*  <Menu.Item key="layout">*/}
+        {/*    <FormattedMessage id="menu.account.setlayout" defaultMessage="account layout" />*/}
+        {/*    <Switch size={"small"}/>*/}
+        {/*  </Menu.Item>*/}
+        {/*)}*/}
+        {/*{menu && <Menu.Divider />}*/}
+
         <Menu.Item key="logout">
           <Icon type="logout" />
           <FormattedMessage id="menu.account.logout" defaultMessage="logout" />
         </Menu.Item>
+
       </Menu>
     );
     return currentUser && currentUser.name ? (

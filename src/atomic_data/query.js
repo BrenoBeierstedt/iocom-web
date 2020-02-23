@@ -4,13 +4,27 @@ export const GET_USERS = gql`
 {
     Users
     {
-      ID
+      id
       full_name
       email
       avatar
+      active
       roles {
         name
       }
+    }
+  }
+`
+
+export const GET_CLIENTS = gql`
+  {
+    Clients
+    {
+      ID
+      full_name
+      email
+      active
+
     }
   }
 `
@@ -50,19 +64,18 @@ export const GET_COUNTRIES = gql`
 }
 `
 
-export const GET_CURRENCIES = gql`
-{
-  Currencies(orderBy: active_asc)
+export const GET_CONTRACTS = gql`
   {
-    code
-    name
-    flag
-    active
-    worthvalue
-    worthstatus
+    Contracts(orderBy: active_desc) {
+      active
+      client{
+        full_name
+      }
+      ID
+    }
   }
-}
 `
+
 
 export const GET_USER_BY_ID = gql`
   query UserById($ID: String!) {
@@ -82,9 +95,11 @@ export const GET_USER_BY_ID = gql`
 `
 
 export const GET_MYSELF = gql`
-  query Myself($ID: String!) {
+  query Myself($email: String!) {
     Myself (
-      ID: $ID
+     searchUserInput: {
+      email: $email
+    }
     )
     {
       ID,

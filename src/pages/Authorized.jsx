@@ -8,7 +8,6 @@ const getRouteAuthority = (path, routeData) => {
   let authorities;
   routeData.forEach(route => {
     if (route.authority) {
-      console.log(authorities)
       authorities = route.authority;
     } // match prefix
 

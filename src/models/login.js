@@ -48,6 +48,9 @@ const Model = {
       const { redirect } = getPageQuery(); // Note: There may be security issues, please note
 
       if (window.location.pathname !== '/user/login' && !redirect) {
+        localStorage.setItem('idome_authority_roles', '')
+        localStorage.setItem('idome_authority_token', '')
+
         router.replace({
           pathname: '/user/login',
           search: stringify({

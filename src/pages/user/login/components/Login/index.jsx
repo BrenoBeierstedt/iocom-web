@@ -11,7 +11,9 @@ import { Mutation } from 'react-apollo'
 
 class Login extends Component {
   static Tab = LoginTab;
+
   static Submit = LoginSubmit;
+
   static defaultProps = {
     className: '',
     defaultActiveKey: '',
@@ -28,14 +30,6 @@ class Login extends Component {
     };
   }
 
-  componentDidMount() {
-    const { form, onCreate } = this.props;
-
-    if (onCreate) {
-      onCreate(form);
-    }
-  }
-
   onSwitch = type => {
     this.setState(
       {
@@ -50,6 +44,7 @@ class Login extends Component {
       },
     );
   };
+
   getContext = () => {
     const { form } = this.props;
     const { tabs = [] } = this.state;
@@ -58,6 +53,11 @@ class Login extends Component {
         addTab: id => {
           this.setState({
             tabs: [...tabs, id],
+          });
+        },
+        removeTab: id => {
+          this.setState({
+            tabs: tabs.filter(currentId => currentId !== id),
           });
         },
       },
@@ -77,12 +77,12 @@ class Login extends Component {
       },
     };
   };
+
   handleSubmit = (e, loginUser) => {
     e.preventDefault();
     const { active = {}, type = '' } = this.state;
     const { form, onSubmit } = this.props;
     const activeFields = active[type] || [];
-
 
     if (form) {
       form.validateFields(
@@ -92,6 +92,8 @@ class Login extends Component {
         },
         (err, values) => {
           if (onSubmit) {
+            localStorage.setItem('idome_authority_token', "")
+            localStorage.setItem('idome_authority_roles', "")
 
             loginUser({
               variables: {
@@ -102,7 +104,6 @@ class Login extends Component {
               localStorage.setItem('idome_authority_token', data.data.LoginUser.token)
               const auth = data.data.LoginUser.token
               const status = data.data.LoginUser.status
-
               onSubmit(err, values, auth, status );
 
             }).catch((error) => {

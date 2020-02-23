@@ -6,6 +6,7 @@ import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
 import SelectLang from '../SelectLang';
 import styles from './index.less';
+import NoticeIconView from './NoticeIconView';
 
 const GlobalHeaderRight = props => {
   const { theme, layout } = props;
@@ -42,7 +43,8 @@ const GlobalHeaderRight = props => {
       {/*  }}*/}
       {/*/>*/}
 
-      <Avatar />
+      <NoticeIconView />
+      <Avatar menu />
       <SelectLang className={styles.action} />
     </div>
   );
