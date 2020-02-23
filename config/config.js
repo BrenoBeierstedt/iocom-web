@@ -46,7 +46,7 @@ const plugins = [
   [
     'umi-plugin-apollo',
     {
-      uri: 'http://api.local.iocom.com.br',
+      uri: 'http://api.local.iocom.com.br/graphql',
       hooksImportFrom: 'react-apollo-hooks',
       options: `${__dirname}/graphql.js`,
     },
@@ -82,60 +82,161 @@ export default {
   // umi routes: https://umijs.org/zh/guide/router.html
   routes: [
     {
-      path: '/user',
-      component: '../layouts/UserLayout',
-      routes: [
-        {
-          name: 'login',
-          path: '/user/login',
-          component: './user/login',
-        },
-      ],
-    },
-    {
       path: '/',
-      component: '../layouts/SecurityLayout',
+      component: '../layouts/BlankLayout',
       routes: [
         {
-          path: '/',
-          component: '../layouts/BasicLayout',
-          authority: ['admin', 'user'],
+          path: '/user',
+          component: '../layouts/UserLayout',
           routes: [
             {
-              path: '/',
-              redirect: '/welcome',
+              path: '/user',
+              redirect: '/user/login',
             },
             {
-              path: '/welcome',
-              name: 'welcome',
+              name: 'login',
               icon: 'smile',
-              component: './Welcome',
+              path: '/user/login',
+              component: './user/login',
             },
             {
-              path: '/admin',
-              name: 'admin',
-              icon: 'crown',
-              component: './Admin',
-              authority: ['admin'],
-            },
-            {
-              name: 'analysis',
+              name: 'register-result',
               icon: 'smile',
-              path: '/dashboardanalysis',
-              component: './DashboardAnalysis',
+              path: '/user/register-result',
+              component: './user/register-result',
             },
             {
-              component: './404',
+              name: 'register',
+              icon: 'smile',
+              path: '/user/register',
+              component: './user/register',
+            },
+            {
+              component: '404',
             },
           ],
         },
         {
-          component: './404',
+          path: '/',
+          component: '../layouts/BasicLayout',
+          Routes: ['src/pages/Authorized'],
+          authority: ['admin', 'user'],
+          routes: [
+            {
+              path: '/dashboard',
+              name: 'dashboard',
+              icon: 'dashboard',
+              routes: [
+                {
+                  name: 'analysis',
+                  icon: 'smile',
+                  path: '/dashboard/analysis',
+                  component: './dashboard/analysis',
+                },
+                {
+                  name: 'monitor',
+                  icon: 'smile',
+                  path: '/dashboard/monitor',
+                  component: './dashboard/monitor',
+                },
+                {
+                  name: 'workplace',
+                  icon: 'smile',
+                  path: '/dashboard/workplace',
+                  component: './dashboard/workplace',
+                },
+              ],
+            },
+            {
+              name: 'administrative',
+              icon: 'folder-open',
+              path: '/administrative',
+              routes: [
+                {
+                  name: 'adminuserlist',
+                  icon: 'team',
+                  path: '/administrative/adminuser-list',
+                  component: './administrative/adminUserList',
+                },
+
+                {
+                  name: 'contractList',
+                  icon: 'file-text',
+                  path: '/administrative/contractList',
+                  component: './administrative/contractList',
+                },
+                {
+                  name: 'contractRegister',
+                  icon: 'file-add',
+                  path: '/administrative/contract-register',
+                  component: './administrative/contractRegister',
+                },
+                {
+                  name: 'client',
+                  icon: 'user',
+                  path: '/administrative/client-list',
+                  component: './administrative/clientList',
+                },
+                {
+                  name: 'clientRegister',
+                  icon: 'smile',
+                  path: '/administrative/client-register',
+                  component: './administrative/clientRegister',
+                },
+
+              ]
+            },
+            {
+              name: 'adduser',
+              icon: 'user-add',
+              path: '/account/adduser',
+              component: './account/adduser'
+
+            },
+            {
+              name: 'account',
+              icon: 'user',
+              path: '/account',
+              routes: [
+                {
+                name: 'list',
+                icon: 'team',
+                path: '/account/list',
+                component: './account/userList',
+              },
+                {
+                  name: 'addsingular',
+                  icon: 'setting',
+                  path: '/account/singular',
+                  component: './account/singular',
+                },
+                {
+                  name: 'center',
+                  icon: 'smile',
+                  path: '/account/center',
+                  component: './account/center',
+                  authority: 'god'
+                },
+
+                {
+                  name: 'settings',
+                  icon: 'setting',
+                  path: '/account/settings',
+                  component: './account/settings',
+                },
+              ],
+            },
+            {
+              path: '/',
+              redirect: '/dashboard/analysis',
+              authority: ['admin', 'user'],
+            },
+            {
+              component: '404',
+            },
+          ],
         },
       ],
-    },
-    {
-      component: './404',
     },
   ],
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
