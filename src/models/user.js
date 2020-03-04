@@ -1,4 +1,7 @@
 import { queryCurrent, query as queryUsers } from '@/services/user';
+import useFetchUser from '@/utils/useFetchUser'
+import { userFetch } from '@/utils/rolesDecrypt'
+
 const UserModel = {
   namespace: 'user',
   state: {
@@ -13,18 +16,17 @@ const UserModel = {
       });
     },
 
-    *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
-
+    *fetchCurrent({ payload }, { call, put }) {
+      // const response = yield call(userFetch,payload);
       yield put({
         type: 'saveCurrentUser',
-        payload: response,
+        payload: payload,
       });
     },
   },
   reducers: {
     saveCurrentUser(state, action) {
-      return { ...state, currentUser: action.payload || {} };
+      return { ...state, currentUser: action.payload.user || {} };
     },
 
     changeNotifyCount(

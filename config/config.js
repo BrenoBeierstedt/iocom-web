@@ -30,11 +30,11 @@ const plugins = [
       },
       pwa: pwa
         ? {
-            workboxPluginMode: 'InjectManifest',
-            workboxOptions: {
-              importWorkboxFrom: 'local',
-            },
-          }
+          workboxPluginMode: 'InjectManifest',
+          workboxOptions: {
+            importWorkboxFrom: 'local',
+          },
+        }
         : false, // default close dll, because issue https://github.com/ant-design/ant-design-pro/issues/4665
       // dll features https://webpack.js.org/plugins/dll-plugin/
       // dll: {
@@ -46,9 +46,10 @@ const plugins = [
   [
     'umi-plugin-apollo',
     {
-      uri: 'http://api.local.iocom.com.br/graphql',
+      uri: 'http://api.iocom.com.br/graphql',
       hooksImportFrom: 'react-apollo-hooks',
       options: `${__dirname}/graphql.js`,
+
     },
   ],
   [
@@ -106,10 +107,34 @@ export default {
               component: './user/register-result',
             },
             {
+              name: 'new-password-result',
+              icon: 'smile',
+              path: '/user/new-password-result',
+              component: './user/newPassword-result',
+            },
+            {
               name: 'register',
               icon: 'smile',
               path: '/user/register',
               component: './user/register',
+            },
+            {
+              name: 'forgot-result',
+              icon: 'smile',
+              path: '/user/forgot-result',
+              component: './user/forgot-result',
+            },
+            {
+              name: 'new-password',
+              icon: 'smile',
+              path: '/user/new-password',
+              component: './user/new-password',
+            },
+            {
+              name: 'forgot-password',
+              icon: 'smile',
+              path: '/user/forgot-password',
+              component: './user/forgot-password',
             },
             {
               component: '404',
@@ -137,15 +162,39 @@ export default {
                   name: 'monitor',
                   icon: 'smile',
                   path: '/dashboard/monitor',
+                  authority:['comming'],
+
                   component: './dashboard/monitor',
                 },
                 {
                   name: 'workplace',
                   icon: 'smile',
+                  authority:['comming'],
+
                   path: '/dashboard/workplace',
                   component: './dashboard/workplace',
                 },
               ],
+            },
+            {
+              name: 'complex',
+              icon: 'folder-open',
+              authority:['comming'],
+              path: '/complex',
+              routes: [
+                {
+                  name: 'complexlist',
+                  icon: 'team',
+                  path: '/complex/complex-list',
+                  component: './complex/complexList',
+                },
+                {
+                  name: 'addcomplex',
+                  icon: 'team',
+                  path: '/complex/add-complex',
+                  component: './complex/addComplex',
+                },
+              ]
             },
             {
               name: 'administrative',
@@ -189,6 +238,7 @@ export default {
             {
               name: 'adduser',
               icon: 'user-add',
+              authority:['comming'],
               path: '/account/adduser',
               component: './account/adduser'
 
@@ -199,28 +249,33 @@ export default {
               path: '/account',
               routes: [
                 {
-                name: 'list',
-                icon: 'team',
-                path: '/account/list',
-                component: './account/userList',
-              },
+                  name: 'list',
+                  icon: 'team',
+                  path: '/account/list',
+                  component: './account/userList',
+                },
+
                 {
                   name: 'addsingular',
-                  icon: 'setting',
+                  icon: 'user-add',
+
                   path: '/account/singular',
                   component: './account/singular',
                 },
                 {
                   name: 'center',
                   icon: 'smile',
+                  authority:['comming'],
+
                   path: '/account/center',
                   component: './account/center',
-                  authority: 'god'
                 },
 
                 {
                   name: 'settings',
                   icon: 'setting',
+                  authority:['comming'],
+
                   path: '/account/settings',
                   component: './account/settings',
                 },

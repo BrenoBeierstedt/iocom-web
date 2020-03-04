@@ -10,7 +10,7 @@ import {
   Select,
   Tooltip,
 } from 'antd';
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { Mutation } from 'react-apollo'
 import { CREATE_CLIENT } from '../../../atomic_data/mutation'
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
@@ -24,24 +24,18 @@ import useStage from './useStageComponent'
 const Contract = (props) => {
   let currentComponent
   const {stage, getCurrentStep} = useStage()
-console.log(stage)
+  console.log(stage)
   const handleSubmit = () => {
     getCurrentStep()
   }
 
-  if (stage === 1) {
-    currentComponent = <ClientForm />;
-  } else if (stage === 2) {
-    currentComponent = <Success />;
-  } else {
-    currentComponent = <Failed />;
-  }
 
   return (
 
     <PageHeaderWrapper content={<FormattedMessage id="user.description" />}>
       <Card bordered={false}>
-        {currentComponent}
+
+        <ClientForm/>
       </Card>
     </PageHeaderWrapper>
 

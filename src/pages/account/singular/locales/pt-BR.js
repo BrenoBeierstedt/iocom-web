@@ -4,6 +4,6 @@ export default {
   "user.full_name":"Nome Completo",
   "user.email":"E-mail",
   "user.password":"Senha",
-
+"formandbasic-form.success":"Usuário cadastrado com sucesso"
 
 }

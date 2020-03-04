@@ -1,20 +1,50 @@
 import { Icon, Tooltip } from 'antd';
-import React from 'react';
+import React, {useEffect} from 'react';
 import { connect } from 'dva';
-import { formatMessage } from 'umi-plugin-react/locale';
 import Avatar from './AvatarDropdown';
-import HeaderSearch from '../HeaderSearch';
 import SelectLang from '../SelectLang';
 import styles from './index.less';
 import NoticeIconView from './NoticeIconView';
+import useFetchUser from '@/utils/useFetchUser'
+import { useDispatch } from 'dva'
+import {useSelector} from "react-redux";
+import {useQuery} from "@apollo/react-hooks";
+import {GET_MYSELF} from "@/atomic_data/query";
+import jwt_decode from 'jwt-decode'
+
+
 
 const GlobalHeaderRight = props => {
+  const dispatch = useDispatch()
   const { theme, layout } = props;
   let className = styles.right;
+
+  const decoded = jwt_decode(localStorage.getItem("idome_authority_token"))
+  const email = decoded.email
+  const {loading, error, data} = useQuery(GET_MYSELF, {variables : {email}});
+useEffect(() => {
+  if(data){
+    let user = {
+      id: data.Myself.id,
+      full_name: data.Myself.full_name,
+      email: data.Myself.email,
+      avatar: data.Myself.avatar
+    }
+    dispatch({type:'user/fetchCurrent', payload: {user}})
+  }
+
+  }
+
+)
+
+
+
 
   if (theme === 'dark' && layout === 'topmenu') {
     className = `${styles.right}  ${styles.dark}`;
   }
+
+
 
   return (
     <div className={className}>
@@ -44,7 +74,7 @@ const GlobalHeaderRight = props => {
       {/*/>*/}
 
       <NoticeIconView />
-      <Avatar menu />
+      <Avatar menu {...props} />
       <SelectLang className={styles.action} />
     </div>
   );

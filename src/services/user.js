@@ -1,13 +1,6 @@
-import React from 'react';
-import { useMutation, useQuery } from 'react-apollo-hooks'
-import User  from './userFetch';
-import client from '@/pages/.umi/apollo/index'
-import { Query, Mutation } from 'react-apollo';
-import {GET_MYSELF} from "@/atomic_data/query";
-import {userId} from "@/utils/rolesDecrypt"
-import jwt_decode from "jwt-decode"
 import request from '@/utils/request';
-
+import { useLazyQuery } from '@apollo/react-hooks';
+import {GET_MYSELF} from '@/atomic_data/query'
 
 // const UserList = () => {
 //   const { data, error, loading } = useQuery(GET_MYSELF)
@@ -28,8 +21,6 @@ export async function query() {
 export async function queryCurrent() {
 
   try{
-
-
 
     return request('/api/currentUser');
 

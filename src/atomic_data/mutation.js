@@ -42,12 +42,11 @@ mutation DeleteUser($email: String!){
 }
 `
 
-export const UPDATE_PASSWORD = gql`
-mutation ForgotPassword($phone_country: String!, $phone_number: String!) {
+export const FORGOT_PASSWORD = gql`
+mutation ForgotPassword($email: String!) {
   ForgotPassword(
-    phoneInput: {
-      phone_country: $phone_country
-      phone_number: $phone_number
+    dataUserInput:{
+      email: $email
     }
   )
 }`
@@ -62,6 +61,19 @@ mutation CreateUser($email: String!, $full_name: String!, $password: String!) {
    }
   )
   {
-    ID
+    id
   }
 }`
+
+export const CHANGE_PASSWORD = gql`
+  mutation ChangePassword($recovery_pwd: String!, $new_password: String!) {
+    ChangePassword(
+      dataChangePasswordInput: {
+        recovery_pwd: $recovery_pwd
+        new_password: $new_password
+      }
+    )
+    {
+      changed
+    }
+  }`

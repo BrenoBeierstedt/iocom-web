@@ -5,7 +5,6 @@ import Link from 'umi/link';
 import { connect } from 'dva';
 import LoginComponents from './components/Login';
 import styles from './style.less';
-
 const { Tab, Email, Password, Mobile, Captcha, Submit } = LoginComponents;
 
 @connect(({ userAndlogin, loading }) => ({
@@ -29,6 +28,10 @@ class Login extends Component {
       dispatch({
         type: 'userAndlogin/login',
         payload: { ...values, type, auth, status },
+      });
+      dispatch({
+        type: 'user/fetchCurrent',
+        payload: { ...values, auth },
       });
     }
   };
@@ -108,18 +111,15 @@ class Login extends Component {
           />
           <div>
 
-            <a
-              style={{
-                float: 'right',
-              }}
-              href=""
-            >
+            <Link className={styles.register} to="/user/forgot-password">
               <FormattedMessage id="userandlogin.login.forgot-password" />
-            </a>
+            </Link>
           </div>
           <Submit loading={submitting}>
             <FormattedMessage id="userandlogin.login.login" />
           </Submit>
+
+
         </LoginComponents>
       </div>
     );

@@ -102,7 +102,8 @@ export const GET_MYSELF = gql`
     }
     )
     {
-      ID,
+      id,
+      avatar,
       full_name,
       email,
       roles {

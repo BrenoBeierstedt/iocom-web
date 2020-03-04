@@ -11,8 +11,8 @@ import styles from './style.less';
 
 const { Item } = Menu;
 
-@connect(({ accountAndsettings }) => ({
-  currentUser: accountAndsettings.currentUser,
+@connect(({ user }) => ({
+  currentUser: user.currentUser,
 }))
 class Settings extends Component {
   main = undefined;
@@ -52,7 +52,7 @@ class Settings extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'accountAndsettings/fetchCurrent',
+      type: 'user/fetchCurrent',
     });
     window.addEventListener('resize', this.resize);
     this.resize();

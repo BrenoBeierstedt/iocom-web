@@ -4,20 +4,8 @@ const useStage = () => {
   const [stage, setStage] = useState(1);
 
   const getCurrentStep = (stageReturned) => {
-
-    switch (stageReturned) {
-      case 'info':
-        return setStage(1) ;
-
-      case 'confirm':
-        return setStage(2) ;
-
-      case 'result':
-        return setStage(3) ;
-
-      default:
-        return  setStage(1) ;
-    }
+setStage(stageReturned)
+    console.log(stageReturned)
   }
 
   return {

@@ -1,10 +1,11 @@
 import {Mutation} from "react-apollo";
 import {CREATE_USER} from "@/atomic_data/mutation";
-import {Button, Card, Form, Input} from "antd";
+import {Button, Card, Form, Input, message} from "antd";
 import {formatMessage, FormattedMessage} from "umi-plugin-react/locale";
 import React, {useState} from "react";
 import {useMutation} from "react-apollo-hooks";
 import useStage from './../../useStageComponent'
+import router from "umi/router";
 
 const clientForm = (props) => {
   const FormItem = Form.Item;
@@ -17,7 +18,6 @@ const clientForm = (props) => {
     e.preventDefault()
     validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(values)
         createUser({
           variables: {
             email: values.email,
@@ -25,8 +25,14 @@ const clientForm = (props) => {
             password: values.password,
           },
         }).then((data) => {
-          console.log(data)
-          getCurrentStep(2)
+          message.success(formatMessage({
+              id: 'formandbasic-form.success'
+            })
+          );
+
+          router.push({
+            pathname: '/',
+          });
 
         }).catch((error) => {
           if (error) {

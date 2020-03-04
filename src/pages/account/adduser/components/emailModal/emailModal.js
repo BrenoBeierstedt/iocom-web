@@ -1,46 +1,79 @@
 import React, { Component } from 'react';
 import {
   Modal,
-  Steps
+  Steps,
+  Form,
+  Input,
+  TreeSelect
 } from 'antd'
-import Step1 from './components/Step1';
 import { connect } from 'dva';
 import styles from './style.less';
-import {formatMessage} from "umi-plugin-react/locale";
+import {formatMessage, FormattedMessage} from "umi-plugin-react/locale";
 
 const { Step } = Steps;
+const FormItem = Form.Item;
+const treeData = localStorage.getItem("idome_authority_roles")
+const { TreeNode } = TreeSelect;
+
+  class EmailModal extends Component {
+
+  state = {
+    value: undefined,
+  };
 
 
-class EmailModal extends Component {
-  getCurrentStep() {
-    const {current} = this.props;
+  onChange = value => {
+    console.log('onChange ', value);
+    this.setState({ value });
+  };
 
-    switch (current) {
-      case 'info':
-        return 0;
 
-      case 'confirm':
-        return 1;
 
-      case 'result':
-        return 2;
-
-      default:
-        return 0;
-    }
-  }
+    // getDynamicTreeNodes = prefix => {
+    //   var results = [];
+    //
+    //   for (let x = 0; x < 10; x++) {
+    //     results.push(
+    //       <TreeNode
+    //         value={prefix + "value" + x}
+    //         title={prefix + " dynamic title " + x}
+    //         key={prefix + "key" + x}
+    //       />
+    //     );
+    //   }
+    //
+    //   return results;
+    // };
 
   render() {
-    const currentStep = this.getCurrentStep();
-    let stepComponent;
+treeData.map(t =>{
+  console.log(t)
+})
+console.log(treeData)
 
-    if (currentStep === 1) {
-      stepComponent = <Step2/>;
-    } else if (currentStep === 2) {
-      stepComponent = <Step3/>;
-    } else {
-      stepComponent = <Step1/>;
-    }
+
+    const formItemLayout = {
+      labelCol: {
+        xs: {
+          span: 24,
+        },
+        sm: {
+          span: 7,
+        },
+      },
+      wrapperCol: {
+        xs: {
+          span: 24,
+        },
+        sm: {
+          span: 12,
+        },
+        md: {
+          span: 10,
+        },
+      },
+    };
+
 
     return (
 
@@ -50,23 +83,58 @@ class EmailModal extends Component {
         // onOk={handleOk}
         onCancel={this.props.hideEmail}
         width={780}
-
-
       >
-        <>
-          <Steps current={currentStep} className={styles.steps}>
-            <Step title={`${formatMessage({
-              id: 'manualmodal.step1',
-            })}`} />
-            <Step title={`${formatMessage({
-              id: 'manualmodal.step2',
-            })}`} />
-            <Step title={`${formatMessage({
-              id: 'manualmodal.step3',
-            })}`}/>
-          </Steps>
-          {stepComponent}
-        </>
+        <Form
+          hideRequiredMark
+          style={{
+            marginTop: 8,
+          }}
+          name="basic"
+          initialValues={{
+            public: '1',
+          }}
+
+        >
+          <FormItem
+            {...formItemLayout}
+            label={<FormattedMessage id="adduser-email.email" />}
+            name="title"
+            rules={[
+              {
+                required: true,
+                message: formatMessage({
+                  id: 'formandbasic-form.title.required',
+                }),
+              },
+            ]}
+          >
+            <Input
+
+            />
+          </FormItem>
+          <FormItem
+            {...formItemLayout}
+            label={<FormattedMessage id="adduser-email.roles" />}
+            name="title"
+            rules={[
+              {
+                required: true,
+                message: formatMessage({
+                  id: 'formandbasic-form.title.required',
+                }),
+              },
+            ]}
+          >
+            <TreeSelect
+              showSearch
+              style={{ width: '100%' }}
+              value={this.state.value}
+              dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+              allowClear
+              treeDefaultExpandAll
+              onChange={this.onChange}/>
+          </FormItem>
+        </Form>
       </Modal>
     )
   }

@@ -3,6 +3,9 @@ export default {
   'menu.more-blocks': 'More Blocks',
   'menu.home': 'Início',
   'menu.login': 'Login',
+  'menu.new-password': 'Alterar senha',
+  'menu.forgot-result': 'Solicitação realizada',
+  'menu.forgot-password': 'Recuperar senha',
   'menu.admin': 'admin',
   'menu.register': 'Registro',
   'menu.register.result': 'Resultado de registro',
@@ -11,7 +14,6 @@ export default {
   'menu.administrative.client': 'Clientes',
   'menu.administrative.contractList': 'Contratos',
   'menu.administrative.contractRegister': 'Cadastrar Contrato',
-
   'menu.dashboard.analysis': 'Análise',
   'menu.dashboard.monitor': 'Monitor',
   'menu.dashboard.workplace': 'Ambiente de Trabalho',
@@ -26,6 +28,9 @@ export default {
   'menu.form.step-form.result': 'Formulário Assistido(finalizado)',
   'menu.form.advanced-form': 'Formulário Avançado',
   'menu.list': 'Lista',
+  'menu.complex': 'Condominio',
+  'menu.complex.addcomplex':'Adicionar Condominio',
+  'menu.complex.complexlist':'Condominios',
   'menu.administrative': 'Administrativo',
   'menu.administrative.adminuserlist':'Usuários Gerais',
   'menu.list.table-list': 'Tabela de Busca',
@@ -51,10 +56,8 @@ export default {
   'menu.account.settings': 'Configurar Conta',
   'menu.account.list': 'Usuários',
   'menu.account.addsingular': 'Cadastrar Usuário',
-
   'menu.adduser': 'Convidar Usuário',
   'menu.account.setlayout':'Layout',
-
   'menu.account.trigger': 'Disparar Erro',
   'menu.account.logout': 'Sair',
   'menu.editor': 'Graphic Editor',

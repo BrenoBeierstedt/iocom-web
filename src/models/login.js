@@ -10,8 +10,7 @@ const Model = {
   state: {
     status: undefined,
   },
-  //TODO finalize get authority and redirect to main page after login
-  // jwt decode
+
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(userAuth, payload);

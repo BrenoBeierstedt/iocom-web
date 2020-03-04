@@ -9,7 +9,7 @@ import {
 import {PageHeaderWrapper} from "@ant-design/pro-layout";
 import {FormattedMessage} from "umi-plugin-react/locale";
 import { GET_USERS } from '@/atomic_data/query'
-
+import AtualUser from "@/utils/atualUser";
 const adminUserList = () => {
   const { data, error, loading } = useQuery(GET_USERS)
 
@@ -38,11 +38,9 @@ const adminUserList = () => {
 
   return(
     <PageHeaderWrapper content={<FormattedMessage id="userlist.description" />}>
-      <Table dataSource={data.Users} columns={columns} rowKey="ID" scroll={{ x: 300 }} />
-
+      <Table dataSource={data.Users} columns={columns} rowKey="id" scroll={{ x: 300 }} />
 
     </PageHeaderWrapper>
-
 
   )
 }

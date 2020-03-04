@@ -36,7 +36,7 @@ const passwordProgressMap = {
   userAndregister,
   submitting: loading.effects['userAndregister/submit'],
 }))
-class Register extends Component {
+class Forgot extends Component {
   state = {
     count: 0,
     confirmDirty: false,
@@ -397,4 +397,4 @@ class Register extends Component {
   }
 }
 
-export default Form.create()(Register);
+export default Form.create()(Forgot);

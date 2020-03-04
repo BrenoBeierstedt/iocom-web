@@ -25,9 +25,7 @@ const { Paragraph } = Typography;
 let dt = {}
 const UserList = () => {
   const { data, error, loading } = useQuery(GET_USERS)
-  const nullData = {};
-  console.log(data)
-  console.log(error)
+
 
   const content = (
     <div className={styles.pageHeaderContent}>
@@ -36,7 +34,7 @@ const UserList = () => {
       </p>
       <div className={styles.contentLink}>
         <a>
-          <Link to="/account/adduser">
+          <Link to="/account/singular">
             <Icon type="plus"/> <FormattedMessage id='admin.userlist.add'/>
           </Link>
 
@@ -63,10 +61,10 @@ const UserList = () => {
           pagination={<Pagination defaultCurrent={1} total={50}/>}
           renderItem={item => {
 
-            if (item && item.ID) {
+            if (item && item.id) {
               return (
 
-                <List.Item key={item.ID}>
+                <List.Item key={item.id}>
                   <Card
                     hoverable
                     className={styles.card}
@@ -99,17 +97,6 @@ const UserList = () => {
 
               );
             }
-
-            if(nullData) {
-              return(
-                <List.Item>
-                  <Button type="dashed" className={styles.newButton}>
-                    <Icon type="plus"/> <FormattedMessage id='admin.userlist.add'/>
-                  </Button>
-                </List.Item>
-              )
-            }
-
           }}
         />
       </div>

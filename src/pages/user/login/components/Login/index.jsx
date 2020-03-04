@@ -8,6 +8,7 @@ import LoginTab from './LoginTab';
 import styles from './index.less';
 import { LOGIN_MUTATION } from '@/atomic_data/mutation';
 import { Mutation } from 'react-apollo'
+import {stringify} from "qs";
 
 class Login extends Component {
   static Tab = LoginTab;
@@ -102,6 +103,7 @@ class Login extends Component {
               },
             }).then((data) => {
               localStorage.setItem('idome_authority_token', data.data.LoginUser.token)
+
               const auth = data.data.LoginUser.token
               const status = data.data.LoginUser.status
               onSubmit(err, values, auth, status );

@@ -7,11 +7,9 @@ const Model = {
   namespace: 'userAndlogin',
   state: {
     status: undefined,
-    cu:"merda"
   },
   effects: {
     *login({ payload }, { call, put }) {
-      console.log(payload)
       const response = yield call(userAuth, payload);
       yield put({
         type: 'changeLoginStatus',
@@ -49,7 +47,7 @@ const Model = {
   reducers: {
     changeLoginStatus(state, { payload }) {
       setAuthority(payload.currentAuthority);
-      return { ...state, status: payload.status, type: payload.type };
+      return { ...state, status: payload.status, type: payload.type, email: payload.email };
     },
   },
 };

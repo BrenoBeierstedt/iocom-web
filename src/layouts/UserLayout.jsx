@@ -9,6 +9,24 @@ import logo from '../assets/logo.svg';
 import styles from './UserLayout.less';
 
 const UserLayout = props => {
+const Footer = () => {
+  return(
+  <DefaultFooter
+    copyright="2019 IOCOM Tecnologia"
+    links={[
+
+      {
+        key: 'Ant Design',
+        title: 'IOCOM',
+        href: 'https://iocom.com.br',
+        blankTarget: true,
+      },
+    ]}
+  />
+  )
+}
+
+
   const {
     route = {
       routes: [],
@@ -50,7 +68,8 @@ const UserLayout = props => {
           </div>
           {children}
         </div>
-        <DefaultFooter />
+
+        <Footer />
       </div>
     </>
   );
