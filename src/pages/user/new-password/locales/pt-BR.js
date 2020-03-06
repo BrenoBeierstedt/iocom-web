@@ -5,6 +5,8 @@ export default {
   'new-password.password.twice': 'As senhas não combinam!',
   'new-password.password.required': 'Por favor, insira a nova senha!',
   'new-password.register.register': 'Alterar Senha',
+  'new-password.register.send': 'Alterar Senha',
+
   'new-password.confirm-password.placeholder': 'Confirmar senha',
   'new-password.strength.strong': 'Força: Forte',
   'new-password.strength.medium': 'Força: Média',

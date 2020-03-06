@@ -52,7 +52,6 @@ class Forgot extends Component {
     const account = form.getFieldValue('mail');
 
     if (userAndregister.status === 'ok') {
-      message.success('注册成功！');
       router.push({
         pathname: '/user/register-result',
         state: {
@@ -175,22 +174,22 @@ class Forgot extends Component {
     });
   };
 
-  renderPasswordProgress = () => {
-    const { form } = this.props;
-    const value = form.getFieldValue('password');
-    const passwordStatus = this.getPasswordStatus();
-    return value && value.length ? (
-      <div className={styles[`progress-${passwordStatus}`]}>
-        <Progress
-          status={passwordProgressMap[passwordStatus]}
-          className={styles.progress}
-          strokeWidth={6}
-          percent={value.length * 10 > 100 ? 100 : value.length * 10}
-          showInfo={false}
-        />
-      </div>
-    ) : null;
-  };
+  // renderPasswordProgress = () => {
+  //   const { form } = this.props;
+  //   const value = form.getFieldValue('password');
+  //   const passwordStatus = this.getPasswordStatus();
+  //   return value && value.length ? (
+  //     <div className={styles[`progress-${passwordStatus}`]}>
+  //       <Progress
+  //         status={passwordProgressMap[passwordStatus]}
+  //         className={styles.progress}
+  //         strokeWidth={6}
+  //         percent={value.length * 10 > 100 ? 100 : value.length * 10}
+  //         showInfo={false}
+  //       />
+  //     </div>
+  //   ) : null;
+  // };
 
   render() {
     const { form, submitting } = this.props;

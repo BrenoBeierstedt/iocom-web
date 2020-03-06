@@ -54,7 +54,6 @@ class Forgot extends Component {
     const account = form.getFieldValue('mail');
 
     if (userAndregister.status === 'ok') {
-      message.success('注册成功！');
       router.push({
         pathname: '/user/new-password-result',
         state: {
@@ -171,12 +170,6 @@ class Forgot extends Component {
     }
   };
 
-  changePrefix = value => {
-    this.setState({
-      prefix: value,
-    });
-  };
-
   renderPasswordProgress = () => {
     const { form } = this.props;
     const value = form.getFieldValue('password');
@@ -204,7 +197,7 @@ class Forgot extends Component {
         <br/>
 
         <h3>
-          <FormattedMessage id="new-password.register.register" />
+          <FormattedMessage id="new-password.register.send" />
         </h3>
         <Mutation mutation={CHANGE_PASSWORD}>
           {
@@ -291,7 +284,7 @@ class Forgot extends Component {
                       type="primary"
                       htmlType="submit"
                     >
-                      <FormattedMessage id="new-password.register.register" />
+                      <FormattedMessage id="new-password.register.send" />
                     </Button>
 
                   </FormItem>
