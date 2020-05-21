@@ -1,23 +1,54 @@
-import { Button, Form, Input, Select, Upload, message } from 'antd';
+import {Button, Form, Input, Select, Upload, message, Avatar, List, Card, notification} from 'antd';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment, useEffect, useState} from 'react';
 import { connect } from 'dva';
-import GeographicView from './GeographicView';
-import PhoneView from './PhoneView';
 import styles from './BaseView.less';
+import jwt_decode from "jwt-decode";
+import { useQuery, useMutation } from "@apollo/react-hooks";
+import {GET_MYSELF} from "@/atomic_data/query";
+import useChangeEmailModal from "@/pages/account/settings/components/Components/useChangeEmailModal";
+import useChangeNameModal from "@/pages/account/settings/components/Components/useChangeNameModal";
+import ChangeNameModal from "./Components/changeNameModal";
+import ChangeEmailModal from "./Components/changeEmailModal";
+import router from "umi/router";
+import {CREATE_USER_AVATAR} from "@/atomic_data/mutation";
+import { useDispatch } from 'dva'
 
-const FormItem = Form.Item;
-const { Option } = Select; // 头像组件 方便以后独立，增加裁剪之类的功能
 
-const AvatarView = ({ avatar }) => (
+const openAvatarNotification = type => {
+  notification[type]({
+    message: formatMessage({
+      id: 'accountandsettings.basic.email-modal.success',
+    }),
+    description:
+      formatMessage({
+        id: 'accountandsettings.basic.email-modal.success-description',
+      }),
+  });
+};
+
+const AvatarView = ({ avatar }) => {
+  const dispatch = useDispatch()
+  //TODO:Work on image modal crop to submit new avatar
+  const [update, setUpdate] = useState(0)
+  const [changeAvatar, {data}] = useMutation(CREATE_USER_AVATAR,{
+    update: () => {
+      openAvatarNotification("success")
+      window.location.reload(false)
+      setUpdate(update + 1)
+    },
+  })
+  return(
   <Fragment>
     <div className={styles.avatar_title}>
       <FormattedMessage id="accountandsettings.basic.avatar" defaultMessage="Avatar" />
     </div>
     <div className={styles.avatar}>
-      <img src={avatar} alt="avatar" />
+      <Avatar size={144} src={avatar} alt="avatar" />
     </div>
-    <Upload fileList={[]}>
+    <Upload onChange={(file) =>
+
+      changeAvatar({ variables: { avatar: file } })}>
       <div className={styles.button_view}>
         <Button icon="upload">
           <FormattedMessage
@@ -29,7 +60,7 @@ const AvatarView = ({ avatar }) => (
     </Upload>
   </Fragment>
 );
-
+}
 const validatorGeographic = (_, value, callback) => {
   const { province, city } = value;
 
@@ -58,48 +89,55 @@ const validatorPhone = (rule, value, callback) => {
   callback();
 };
 
-@connect(({ accountAndsettings }) => ({
-  currentUser: accountAndsettings.currentUser,
-}))
-class BaseView extends Component {
-  view = undefined;
 
-  componentDidMount() {
-    this.setBaseInfo();
-  }
+const BaseView = (props) => {
 
-  setBaseInfo = () => {
-    const { currentUser, form } = this.props;
+  const decoded = jwt_decode(localStorage.getItem("idome_authority_token"))
+  const email = decoded.email
+  const {loading, error, data} = useQuery(GET_MYSELF, {variables : {email}});
+  // let [user, setUser] = useState(data.Myself.avatar)
+  let view = undefined;
 
-    if (currentUser) {
+  const {isShowingChangeEmail, toggleChangeEmail} = useChangeEmailModal();
+  const {isShowingChangeName, toggleChangeName} = useChangeNameModal();
+
+  useEffect(() => {
+    setBaseInfo()
+  },[])
+
+  const setBaseInfo = () => {
+    const { currentUser, form } = props;
+    if (props) {
       Object.keys(form.getFieldsValue()).forEach(key => {
         const obj = {};
         obj[key] = currentUser[key] || null;
         form.setFieldsValue(obj);
       });
     }
+
   };
-
-  getAvatarURL() {
-    const { currentUser } = this.props;
-
-    if (currentUser) {
-      if (currentUser.avatar) {
-        return currentUser.avatar;
-      }
-
-      const url = 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png';
-      return url;
+  const getName = () => {
+    try{
+      return props.currentUser.full_name.charAt(0)
+    }catch(err){
+      console.log(err)
+      router.push(`/`);
+    }
+  }
+  const getAvatarURL = () => {
+    const { currentUser } = props;
+    if (currentUser.avatar) {
+      return currentUser.avatar;
     }
 
-    return '';
+    return 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png';
   }
 
-  getViewDom = ref => {
-    this.view = ref;
+  const getViewDom = ref => {
+    view = ref;
   };
 
-  handlerSubmit = event => {
+  const handlerSubmit = event => {
     event.preventDefault();
     const { form } = this.props;
     form.validateFields(err => {
@@ -113,182 +151,53 @@ class BaseView extends Component {
     });
   };
 
-  render() {
-    const {
-      form: { getFieldDecorator },
-    } = this.props;
-    return (
-      <div className={styles.baseView} ref={this.getViewDom}>
-        <div className={styles.left}>
-          <Form layout="vertical" hideRequiredMark>
-            <FormItem
-              label={formatMessage({
-                id: 'accountandsettings.basic.email',
-              })}
-            >
-              {getFieldDecorator('email', {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage(
-                      {
-                        id: 'accountandsettings.basic.email-message',
-                      },
-                      {},
-                    ),
-                  },
-                ],
-              })(<Input />)}
-            </FormItem>
-            <FormItem
-              label={formatMessage({
-                id: 'accountandsettings.basic.nickname',
-              })}
-            >
-              {getFieldDecorator('name', {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage(
-                      {
-                        id: 'accountandsettings.basic.nickname-message',
-                      },
-                      {},
-                    ),
-                  },
-                ],
-              })(<Input />)}
-            </FormItem>
-            <FormItem
-              label={formatMessage({
-                id: 'accountandsettings.basic.profile',
-              })}
-            >
-              {getFieldDecorator('profile', {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage(
-                      {
-                        id: 'accountandsettings.basic.profile-message',
-                      },
-                      {},
-                    ),
-                  },
-                ],
-              })(
-                <Input.TextArea
-                  placeholder={formatMessage({
-                    id: 'accountandsettings.basic.profile-placeholder',
-                  })}
-                  rows={4}
-                />,
-              )}
-            </FormItem>
-            <FormItem
-              label={formatMessage({
-                id: 'accountandsettings.basic.country',
-              })}
-            >
-              {getFieldDecorator('country', {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage(
-                      {
-                        id: 'accountandsettings.basic.country-message',
-                      },
-                      {},
-                    ),
-                  },
-                ],
-              })(
-                <Select
-                  style={{
-                    maxWidth: 220,
-                  }}
-                >
-                  <Option value="China">中国</Option>
-                </Select>,
-              )}
-            </FormItem>
-            <FormItem
-              label={formatMessage({
-                id: 'accountandsettings.basic.geographic',
-              })}
-            >
-              {getFieldDecorator('geographic', {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage(
-                      {
-                        id: 'accountandsettings.basic.geographic-message',
-                      },
-                      {},
-                    ),
-                  },
-                  {
-                    validator: validatorGeographic,
-                  },
-                ],
-              })(<GeographicView />)}
-            </FormItem>
-            <FormItem
-              label={formatMessage({
-                id: 'accountandsettings.basic.address',
-              })}
-            >
-              {getFieldDecorator('address', {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage(
-                      {
-                        id: 'accountandsettings.basic.address-message',
-                      },
-                      {},
-                    ),
-                  },
-                ],
-              })(<Input />)}
-            </FormItem>
-            <FormItem
-              label={formatMessage({
-                id: 'accountandsettings.basic.phone',
-              })}
-            >
-              {getFieldDecorator('phone', {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage(
-                      {
-                        id: 'accountandsettings.basic.phone-message',
-                      },
-                      {},
-                    ),
-                  },
-                  {
-                    validator: validatorPhone,
-                  },
-                ],
-              })(<PhoneView />)}
-            </FormItem>
-            <Button type="primary" onClick={this.handlerSubmit}>
-              <FormattedMessage
-                id="accountandsettings.basic.update"
-                defaultMessage="Update Information"
+  const {
+    form: { getFieldDecorator },
+  } = props;
+  return (
+    <>
+    <div className={styles.baseView} ref={getViewDom()}>
+      <div className={styles.left}>
+          <List  layout="vertical">
+            <List.Item >
+              <List.Item.Meta
+                title={formatMessage({
+                  id: 'accountandsettings.basic.email',
+                })}
+                description={props.currentUser.email}
               />
-            </Button>
-          </Form>
-        </div>
-        <div className={styles.right}>
-          <AvatarView avatar={this.getAvatarURL()} />
-        </div>
+              <Button type="link" onClick={toggleChangeEmail}>
+                <FormattedMessage id="accountandsettings.basic.alter-email"  />
+              </Button>
+            </List.Item>
+            <List.Item >
+              <List.Item.Meta
+                title={formatMessage({
+                  id: 'accountandsettings.basic.nickname',
+                })}
+                description={props.currentUser.full_name}
+              />
+              <Button type="link" onClick={toggleChangeName}>
+                <FormattedMessage id="accountandsettings.basic.alter-name" />
+              </Button>
+            </List.Item>
+          </List>
+
       </div>
-    );
-  }
+      <div className={styles.right}>
+        { props.currentUser.avatar ? (<AvatarView avatar={getAvatarURL()}  />) : (<Avatar size={144} >{getName()}</Avatar>) }
+      </div>
+
+    </div>
+      <ChangeEmailModal isShowingChangeEmail={isShowingChangeEmail} hideEmail={toggleChangeEmail}/>
+      <ChangeNameModal isShowingChangeName={isShowingChangeName} hideName={toggleChangeName}/>
+
+    </>
+);
+
 }
 
-export default Form.create()(BaseView);
+export default connect(({ user }) => ({
+  currentUser: user.currentUser,
+}))(Form.create()(BaseView));
+

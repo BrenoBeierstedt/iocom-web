@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 import { GridContent } from '@ant-design/pro-layout';
 import { Menu } from 'antd';
@@ -8,12 +8,13 @@ import BindingView from './components/binding';
 import NotificationView from './components/notification';
 import SecurityView from './components/security';
 import styles from './style.less';
+import jwt_decode from "jwt-decode";
+import {useQuery} from "@apollo/react-hooks";
+import {GET_MYSELF} from "@/atomic_data/query";
+import ChangeEmailModal from "@/pages/account/settings/components/Components/changeEmailModal";
 
 const { Item } = Menu;
 
-@connect(({ user }) => ({
-  currentUser: user.currentUser,
-}))
 class Settings extends Component {
   main = undefined;
 
@@ -29,10 +30,10 @@ class Settings extends Component {
           defaultMessage="Security Settings"
         />
       ),
-      binding: (
+      role: (
         <FormattedMessage
-          id="accountandsettings.menuMap.binding"
-          defaultMessage="Account Binding"
+          id="accountandsettings.menuMap.roles"
+          defaultMessage="Roles"
         />
       ),
       notification: (
@@ -45,6 +46,8 @@ class Settings extends Component {
     this.state = {
       mode: 'inline',
       menuMap,
+      emailModal:false,
+      nameModal:false,
       selectKey: 'base',
     };
   }
@@ -52,7 +55,7 @@ class Settings extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'user/fetchCurrent',
+      type: 'accountAndsettings/fetchCurrent',
     });
     window.addEventListener('resize', this.resize);
     this.resize();
@@ -129,14 +132,11 @@ class Settings extends Component {
   };
 
   render() {
-    const { currentUser } = this.props;
 
-    if (!currentUser.userid) {
-      return '';
-    }
 
     const { mode, selectKey } = this.state;
     return (
+<>
       <GridContent>
         <div
           className={styles.main}
@@ -157,8 +157,14 @@ class Settings extends Component {
           </div>
         </div>
       </GridContent>
+
+</>
     );
   }
 }
 
-export default Settings;
+export default connect(({ user }) => ({
+  currentUser: user.currentUser,
+}))(Settings);
+
+
